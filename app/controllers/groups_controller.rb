@@ -1,5 +1,7 @@
 class GroupsController < ApplicationController
   before_action :find_group,only: [:show,:edit,:update,:destroy]
+  before_action :authenticate_user!, only: [:new,:create,:edit,:update,:destroy]
+  before_action :authenticate_owner!,only:[:edit,:update,:destroy]
   def index
     @groups = Group.all
   end
@@ -14,6 +16,7 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.new(group_params)
+    @group.user = current_user
     if @group.save
       flash[:succes] = "Group has been created."
       redirect_to group_path(@group)
@@ -51,6 +54,12 @@ class GroupsController < ApplicationController
   end
   def find_group
     @group = Group.find(params[:id])
+  end
+  def authenticate_owner!
+    if current_user != @group.user
+      redirect_to root_path
+      flash[:danger]='You have no permission'
+    end
   end
 
 end
