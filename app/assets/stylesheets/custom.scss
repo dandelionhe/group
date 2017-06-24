@@ -1,0 +1,12 @@
+@import "variables";
+@import 'flat-ui';
+
+// rails g devise:views:locale it
+// run above code to generate bootstrap view for devise
+
+// Header
+.navbar{
+  a{
+    text-decoration: none;
+  }
+}
