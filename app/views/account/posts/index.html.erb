@@ -1,0 +1,26 @@
+<div class="col-md-12">
+    <h2 class="text-center">My Posts</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>Content</td>
+                <td>Group Name</td>
+
+                <td>Last updated</td>
+
+            </tr>
+        </thead>
+        <tbody>
+            <% @posts.each do |post| %>
+            <tr>
+                <td><%= post.content %></td>
+                <td><%= post.group.title %></td>
+
+                <td><%= time_ago_in_words post.updated_at %></td>
+                <td><%= link_to 'Edit',edit_group_post_path(post.group,post),class: "btn btn-default" %></td>
+                <td><%= link_to 'destroy',group_post_path(post.group,post),method: :delete,class: "btn btn-default",data: { confirm: 'You sure?' } %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>

@@ -1,12 +1,48 @@
 <div class="col-md-12">
-  <% if current_user && current_user == @group.user %>
-  <aside class="col-md-2 pull-right">
-    <%= link_to "Edit",edit_group_path(@group),class: "btn btn-primary" %>
-  </aside>
-  <% end %>
-  <div class="col-md-10 well">
-    <h2><%= @group.title %></h2>
-    <p><%= @group.description %></p>
-  </div>
+
+    <aside class="col-md-2 pull-right">
+        <% if current_user && current_user.is_member_of?(@group) %>
+        <label class="label label-success">Group member</label>
+        <%= link_to "Quit",quit_group_path(@group),method: :post,class: "btn btn-default" %>
+    <% else %>
+        <label class="label label-warning">Not a Group member</label>
+        <%= link_to "Join",join_group_path(@group),method: :post,class: "btn btn-default" %>
+        <% end %>
+        <br>
+        <br>
+        <%= link_to "Write a Post",new_group_post_path(@group),class: "btn btn-default" %>
+        <% if current_user && current_user == @group.user %>
+        <%= link_to "Edit",edit_group_path(@group),class: "btn btn-primary" %>
+        <% end %>
+    </aside>
+
+    <div class="col-md-10 well">
+        <h2><%= @group.title %></h2>
+        <p><%= @group.description %></p>
+    </div>
+
+    <div class="col-md-10">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>Content</td>
+                    <td>Creator</td>
+                    <td>Post at</td>
+
+                </tr>
+            </thead>
+            <tbody>
+                <% @posts.each do |post| %>
+                <tr>
+                    <td><%= post.content %></td>
+                    <td><%= post.user.email %></td>
+                    <td><%= post.created_at %></td>
+
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
+        <%= will_paginate @posts %>
+    </div>
 
 </div>
